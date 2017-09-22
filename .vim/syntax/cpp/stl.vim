@@ -12,10 +12,10 @@
 " This list is not complete yet. Your contribution is welcome!
 
 syntax keyword cppSTLconstant badbit
-syntax keyword cppSTLconstant cerr
-syntax keyword cppSTLconstant cin
-syntax keyword cppSTLconstant clog
-syntax keyword cppSTLconstant cout
+syntax keyword cppSTLnamespace cerr
+syntax keyword cppSTLnamespace cin
+syntax keyword cppSTLnamespace clog
+syntax keyword cppSTLnamespace cout
 syntax keyword cppSTLconstant digits
 syntax keyword cppSTLconstant digits10
 syntax keyword cppSTLconstant eofbit
@@ -44,10 +44,10 @@ syntax keyword cppSTLconstant radix
 syntax keyword cppSTLconstant round_style
 syntax keyword cppSTLconstant tinyness_before
 syntax keyword cppSTLconstant traps
-syntax keyword cppSTLconstant wcerr
-syntax keyword cppSTLconstant wcin
-syntax keyword cppSTLconstant wclog
-syntax keyword cppSTLconstant wcout
+syntax keyword cppSTLnamespace wcerr
+syntax keyword cppSTLnamespace wcin
+syntax keyword cppSTLnamespace wclog
+syntax keyword cppSTLnamespace wcout
 syntax keyword cppSTLexception bad_alloc
 syntax keyword cppSTLexception bad_array_new_length
 syntax keyword cppSTLexception bad_exception
