@@ -1,6 +1,5 @@
 set nocompatible     	  " отключаем совместимость с vi
 set nomodeline
-set exrc 			 	  " включаем поддержку локальных .vimrc
 set autochdir			  " автоматически переключать рабочую папку
 set clipboard=unnamedplus " использовать внешний буфер
 
@@ -38,6 +37,10 @@ map j gj
 map k gk
 nnoremap ; :
 
+if getcwd()!="/home/hant0508/git/tmp" &&  getcwd()!="/home/hant0508/git/lessons" 
+	set exrc   " включаем поддержку локальных .vimrc
+endif
+
 autocmd User Startified setlocal cursorline
 let g:startify_enable_special = 0
 let g:startify_list_order = [['Recently used files'], 'files',  ['Recently used files in the current directory:'], 'dir']
@@ -48,8 +51,9 @@ set cindent			" автоматическая расстановка отступ
 set tabstop=4		" длина табуляции по умолчанию
 set shiftwidth=4
 au BufRead,BufNewFile *.{tex,txt,py,html}	set nocindent
-au BufRead,BufNewFile *.{xml,html}			set shiftwidth=2
-au BufRead,BufNewFile *.{xml,html}			set tabstop=2
+au BufRead,BufNewFile *.{tex,txt,py,html}	set noautoindent
+au BufRead,BufNewFile *.{tex,xml,html,css}	set shiftwidth=2
+au BufRead,BufNewFile *.{tex,xml,html,css}	set tabstop=2
 set smarttab		" динамическое изменение длины табуляции
 
 " настройки подсветки синтаксиса
@@ -81,9 +85,9 @@ function! Run() " расширяем и без того безграничные
 	if expand("%:e")=="cpp"
 		!clang++ -std=c++14 -I. -Wall -lGLU -lGL -lglut "%" && "./a.out"
 	elseif expand("%:e")=="c"
-		!clang "%" && "./a.out"
+		!gcc "%" -std=c99 -Wall -Wextra -Wfloat-equal -Wpedantic -lm && "./a.out"
 	elseif expand("%:e")=="tex"
-		!xelatex --8bit  --shell-escape "%" && rm "%:r.log" && (evince "%:r.pdf" &)
+		!xelatex --8bit  --shell-escape "%" && rm "%:r.log" && (evince "%:r.pdf" 2> /dev/null &)
 	elseif expand("%:e")=="py"
 		!python3 "%"
 	elseif expand("%:e")=="pas"
@@ -107,16 +111,22 @@ function Template() " шаблоны для некоторых языков
 	edit
 endfunction
 
-function Spell() " проверка орфографии
+" проверка орфографии
+set nospell
+set spelllang=en,ru
+
+function Spell() " включение/выключение проверки
 	if &spell
 		set nospell
+		call cursor(line('.'), col('.')-1) " чтобы курсор не убегал
 	else
 		set spell
-		set spelllang=en,ru
-		highlight clear SpellBad
+		syntax spell toplevel
+		highlight clear SpellBad " подсветка ошибок
 		highlight SpellBad ctermfg=Red
 		highlight clear SpellCap
 		highlight clear SpellLocal
+		call cursor(line('.'), col('.')-1)
 	endif
 endfunction
 
@@ -132,7 +142,8 @@ map <F10> :call Spell()<CR>
 map <F1> <Esc> 
 imap <F1> <Esc>
 
-com -nargs=1 Item <args>s/^.*/	\\item &  " LaTeX itemize: Item 100,110
+" LaTeX itemize: Item 100,110
+com -nargs=1 Item <args>s/^.*/	\\item & 
 
 " не очищать буфер обмена при выходе
 autocmd VimLeave * call system("xsel -ib", getreg('+'))
