@@ -49,6 +49,13 @@ html="<!DOCTYPE html>
 	</body>
 </html>"
 
+c="#include<stdio.h>
+
+int main(void)
+{
+	printf(\"%s\", \"\");
+}"
+
 if [ "$ex" == "cpp" ]
 then
 	echo "$cpp" >> $1
@@ -64,4 +71,7 @@ then
 elif [ "$ex" == "html" ]
 then
 	echo "$html" >> $1
+elif [ "$ex" == "c" ]
+then
+	echo "$c" >> $1
 fi

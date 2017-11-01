@@ -85,7 +85,7 @@ function! Run() " расширяем и без того безграничные
 	if expand("%:e")=="cpp"
 		!clang++ -std=c++14 -I. -Wall -lGLU -lGL -lglut "%" && "./a.out"
 	elseif expand("%:e")=="c"
-		!gcc "%" -std=c99 -Wall -Wextra -Wfloat-equal -Wpedantic -lm && "./a.out"
+		!gcc "%" -std=c99 -Wall -Wformat-security -Winit-self -Wno-pointer-sign -Wignored-qualifiers -Wfloat-equal -Wnested-externs -Wmissing-field-initializers  -Wmissing-parameter-type -Wold-style-definition -Wold-style-declaration -Wstrict-prototypes -Wtype-limits -Wswitch-default -std=gnu99 -lm && "./a.out"
 	elseif expand("%:e")=="tex"
 		!xelatex --8bit  --shell-escape "%" && rm "%:r.log" && (evince "%:r.pdf" 2> /dev/null &)
 	elseif expand("%:e")=="py"
