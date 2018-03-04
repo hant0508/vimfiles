@@ -7,7 +7,7 @@ set mouse=a				  " включаем мышь
 set autoread			  " автоматически перезагружать файл, если он был изменён
 set linebreak			  " перенос по словам, а не по буквам
 set fileencodings=utf-8,windows-1251	  " подключаем кодировки
-set langmap=йцукнгщзфвч.яп;qweryuopadx/zg " включаем поддержку основных команд на русском
+set langmap=йцукнгщзфвчяпО;qweryuopadxzgJ " включаем поддержку основных команд на русском
 
 set number			" включаем нумерацию строк
 set cursorline		" выделяем текущую строку
@@ -64,6 +64,7 @@ syntax spell toplevel
 set t_Co=256
 colorscheme night 
 autocmd! BufRead,BufNewFile,BufEnter *.{c,cpp,h,hpp,cxx,hxx,cc,java,javascript} call CSyntaxAfter()
+au BufRead,BufNewFile *.{s,asm,inc}	set ft=nasm
 
 " настройки powerline
 set laststatus=2
@@ -88,6 +89,9 @@ function! Run() " расширяем и без того безграничные
 		!gcc "%" -Wall -Wformat-security -Winit-self -Wno-pointer-sign -Wignored-qualifiers -Wfloat-equal -Wnested-externs -Wmissing-field-initializers -Wmissing-parameter-type -Wold-style-definition -Wold-style-declaration -Wstrict-prototypes -Wtype-limits -Wswitch-default -std=gnu99 -lm && "./a.out"
 	elseif expand("%:e")=="tex"
 		!xelatex --8bit  --shell-escape "%" && rm "%:r.log" && (evince "%:r.pdf" 2> /dev/null &)
+"		!pdflatex "%" && rm "%:r.log" && (evince "%:r.pdf" 2> /dev/null &)
+	elseif expand("%:e")=="xtex"
+		!xelatex --8bit  --shell-escape "%" && rm "%:r.log" && (evince "%:r.pdf" 2> /dev/null &)
 	elseif expand("%:e")=="py"
 		!python3 "%"
 	elseif expand("%:e")=="pas"
@@ -102,6 +106,10 @@ function! Run() " расширяем и без того безграничные
 		!(firefox -p test "%" &)
 	elseif expand("%:e")=="md"
 		!grip -b "%"
+	elseif expand("%:e")=="s"
+		!~/.vim/build_asm.sh "%" "%:p:h"
+	elseif expand("%:e")=="asm"
+		!~/.vim/build_asm.sh "%" "%:p:h"
 	endif
 endfunction
 
@@ -129,6 +137,14 @@ function Spell() " включение/выключение проверки
 		call cursor(line('.'), col('.')-1)
 	endif
 endfunction
+
+function Tex()
+	set tw=80
+	set fo+=t
+	set ft=tex
+	call Spell()
+endfunction
+au BufRead,BufNewFile *.{tex,xtex}	call Tex()
 
 map <F4> :NERDTreeToggle<CR> 
 map <F5> :call Run()<CR>

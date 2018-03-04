@@ -54,7 +54,17 @@ c="#include<stdio.h>
 int main(void)
 {
 	printf(\"%s\", \"\");
+	return 0;
 }"
+
+asm="%include \"io.inc\"
+
+section .text
+global CMAIN
+CMAIN:
+
+	mov eax, 0
+	ret"
 
 if [ "$ex" == "cpp" ]
 then
@@ -68,10 +78,16 @@ then
 elif [ "$ex" == "tex" ]
 then
 	echo "$tex" >> $1
+elif [ "$ex" == "xtex" ]
+then
+	echo "$tex" >> $1
 elif [ "$ex" == "html" ]
 then
 	echo "$html" >> $1
 elif [ "$ex" == "c" ]
 then
 	echo "$c" >> $1
+elif [ "$ex" == "asm" ]
+then
+	echo "$asm" >> $1
 fi
