@@ -3,6 +3,7 @@ set nomodeline
 set autochdir			  " автоматически переключать рабочую папку
 set clipboard=unnamedplus " использовать внешний буфер
 
+
 set mouse=a				  " включаем мышь
 set autoread			  " автоматически перезагружать файл, если он был изменён
 set linebreak			  " перенос по словам, а не по буквам
@@ -19,8 +20,8 @@ set wildmenu
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg,*.mp3,*.mp4,*.mkv,*exe,a.out
 set scrolloff=5
 
-set ttyfast			" увеличивает производительность (хотя куда уж лучше?)
-set lazyredraw		" делает прорисовку плавнее
+set ttyfast	" делает прорисовку плавнее
+au BufRead,BufNewFile * set lazyredraw
 
 set noswapfile		" отключаем swap-файлы
 set undofile		" и подключаем вместо них undo
@@ -68,6 +69,7 @@ au BufRead,BufNewFile *.{s,asm,inc}	set ft=nasm
 
 " настройки powerline
 set laststatus=2
+set ttimeoutlen=10 " убирает задержку при выходе из режима вставки
 let g:airline_powerline_fonts=1
 let g:airline_detect_whitespace=0
 let g:airline#extensions#tabline#enabled = 1
@@ -138,6 +140,22 @@ function Spell() " включение/выключение проверки
 	endif
 endfunction
 
+function ToggleLight()
+	if exists("g:lucius_style")
+		color night
+		let g:airline_theme="dark"
+		AirlineRefresh
+		unlet g:lucius_style
+	else
+		let g:lucius_style="light"
+		let g:lucius_contrast="high"
+		let g:lucius_contrast_bg="high"
+		color lucius
+	endif
+endfunction
+
+command Light call ToggleLight()
+
 function Tex()
 	set tw=80
 	set fo+=t
@@ -163,3 +181,4 @@ com -nargs=1 Item <args>s/^.*/	\\item &
 
 " не очищать буфер обмена при выходе
 autocmd VimLeave * call system("xsel -ib", getreg('+'))
+cmap w!! w !sudo tee > /dev/null %
