@@ -38,9 +38,7 @@ map j gj
 map k gk
 nnoremap ; :
 
-if getcwd()!="/home/hant0508/git/tmp" &&  getcwd()!="/home/hant0508/git/lessons" 
-	set exrc   " включаем поддержку локальных .vimrc
-endif
+set exrc   " включаем поддержку локальных .vimrc
 
 autocmd User Startified setlocal cursorline
 let g:startify_enable_special = 0
