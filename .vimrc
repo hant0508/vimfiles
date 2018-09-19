@@ -3,7 +3,6 @@ set nomodeline
 set autochdir			  " автоматически переключать рабочую папку
 set clipboard=unnamedplus " использовать внешний буфер
 
-
 set mouse=a				  " включаем мышь
 set autoread			  " автоматически перезагружать файл, если он был изменён
 set linebreak			  " перенос по словам, а не по буквам
@@ -17,7 +16,7 @@ set ruler			" показывать номер столбца в правом у�
 set noshowmode		" не отображать режим ввода (powerline уже делает это красивее)
 
 set wildmenu
-set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg,*.mp3,*.mp4,*.mkv,*exe,a.out
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg,*.mp3,*.mp4,*.mkv,*exe,*.pdf,*.aux,*.o
 set scrolloff=5
 
 set ttyfast	" делает прорисовку плавнее
@@ -38,7 +37,9 @@ map j gj
 map k gk
 nnoremap ; :
 
-set exrc   " включаем поддержку локальных .vimrc
+if getcwd()!="/home/hant0508/git/tmp" &&  getcwd()!="/home/hant0508/git/lessons"
+	set exrc   " включаем поддержку локальных .vimrc
+endif
 
 autocmd User Startified setlocal cursorline
 let g:startify_enable_special = 0
@@ -53,15 +54,16 @@ au BufRead,BufNewFile *.{tex,txt,py,html}	set nocindent
 au BufRead,BufNewFile *.{tex,txt,py,html}	set noautoindent
 au BufRead,BufNewFile *.{tex,xml,html,css}	set shiftwidth=2
 au BufRead,BufNewFile *.{tex,xml,html,css}	set tabstop=2
+au BufRead,BufNewFile *.{c}	set expandtab
 set smarttab		" динамическое изменение длины табуляции
 
 " настройки подсветки синтаксиса
-filetype off             
+filetype off
 filetype indent plugin on
 syntax on
 syntax spell toplevel
 set t_Co=256
-colorscheme night 
+colorscheme night
 autocmd! BufRead,BufNewFile,BufEnter *.{c,cpp,h,hpp,cxx,hxx,cc,java,javascript} call CSyntaxAfter()
 au BufRead,BufNewFile *.{s,asm,inc}	set ft=nasm
 
@@ -86,7 +88,7 @@ function! Run() " расширяем и без того безграничные
 	if expand("%:e")=="cpp"
 		!clang++ -std=c++14 -I. -Wall -lGLU -lGL -lglut "%" && "./a.out"
 	elseif expand("%:e")=="c"
-		!gcc "%" -Wall -Wformat-security -Winit-self -Wno-pointer-sign -Wignored-qualifiers -Wfloat-equal -Wnested-externs -Wmissing-field-initializers -Wmissing-parameter-type -Wold-style-definition -Wold-style-declaration -Wstrict-prototypes -Wtype-limits -Wswitch-default -std=gnu99 -lm && "./a.out"
+		!gcc -O2 -Wall -Wno-pointer-sign -std=gnu11 "%" -lm && "./a.out"
 	elseif expand("%:e")=="tex"
 		!xelatex --8bit  --shell-escape "%" && rm "%:r.log" && (evince "%:r.pdf" 2> /dev/null &)
 "		!pdflatex "%" && rm "%:r.log" && (evince "%:r.pdf" 2> /dev/null &)
@@ -162,21 +164,26 @@ function Tex()
 endfunction
 au BufRead,BufNewFile *.{tex,xtex}	call Tex()
 
-map <F4> :NERDTreeToggle<CR> 
+map <F4> :NERDTreeToggle<CR>
 map <F5> :call Run()<CR>
 map <F6> :call Template()<CR><CR>
 map <F7> :!~/.vim/test.sh<CR>
 map <F8> :!make run<CR>
-map <F9> :!make debug<CR> 
-map <F10> :call Spell()<CR> 
+map <F9> :!make debug<CR>
+map <F10> :call Spell()<CR>
 
 " отключаем справку по F1 и 'расширяем' Esc
-map <F1> <Esc> 
+map <F1> <Esc>
 imap <F1> <Esc>
 
 " LaTeX itemize: Item 100,110
-com -nargs=1 Item <args>s/^.*/	\\item & 
+com -nargs=1 Item <args>s/^.*/	\\item &
 
 " не очищать буфер обмена при выходе
 autocmd VimLeave * call system("xsel -ib", getreg('+'))
+
+" сохранить из-под sudo
 cmap w!! w !sudo tee > /dev/null %
+
+nnoremap g<Left> gT
+nnoremap g<Right> gt

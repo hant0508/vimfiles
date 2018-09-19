@@ -53,8 +53,8 @@ c="#include<stdio.h>
 
 int main(void)
 {
-	printf(\"%s\", \"\");
-	return 0;
+    printf(\"%s\", \"\");
+    return 0;
 }"
 
 asm="%include \"io.inc\"
