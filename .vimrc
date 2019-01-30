@@ -187,3 +187,6 @@ cmap w!! w !sudo tee > /dev/null %
 
 nnoremap g<Left> gT
 nnoremap g<Right> gt
+
+let g:AutoPairsMultilineClose = 0
+let g:AutoPairsFlyMode = 0
