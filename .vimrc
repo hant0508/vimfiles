@@ -47,25 +47,24 @@ let g:startify_list_order = [['Recently used files'], 'files',  ['Recently used 
 let g:startify_files_number = 5
 
 " настройки отступов
-set cindent			" автоматическая расстановка отступов
+filetype plugin indent on
 set tabstop=4		" длина табуляции по умолчанию
 set shiftwidth=4
-au BufRead,BufNewFile *.{tex,txt,py,html}	set nocindent
 au BufRead,BufNewFile *.{tex,txt,py,html}	set noautoindent
 au BufRead,BufNewFile *.{tex,xml,html,css}	set shiftwidth=2
 au BufRead,BufNewFile *.{tex,xml,html,css}	set tabstop=2
-au BufRead,BufNewFile *.{c}	set expandtab
+" au BufRead,BufNewFile *.{c}	set expandtab
 set smarttab		" динамическое изменение длины табуляции
 
 " настройки подсветки синтаксиса
-filetype off
-filetype indent plugin on
 syntax on
 syntax spell toplevel
 set t_Co=256
 colorscheme night
 autocmd! BufRead,BufNewFile,BufEnter *.{c,cpp,h,hpp,cxx,hxx,cc,java,javascript} call CSyntaxAfter()
-au BufRead,BufNewFile *.{s,asm,inc}	set ft=nasm
+au BufRead,BufNewFile *.{s,asm,inc,nasm} set ft=nasm
+au BufRead,BufNewFile *.{scm} set ft=racket
+let g:python_highlight_all = 1
 
 " настройки powerline
 set laststatus=2
@@ -86,7 +85,7 @@ set t_vb=
 
 function! Run() " расширяем и без того безграничные возможности F5
 	if expand("%:e")=="cpp"
-		!clang++ -std=c++14 -I. -Wall -lGLU -lGL -lglut "%" && "./a.out"
+		!g++ -std=c++17 -I. -O0 -Wall -Wextra -pthread "%" && "./a.out"
 	elseif expand("%:e")=="c"
 		!gcc -O2 -Wall -Wno-pointer-sign -std=gnu11 "%" -lm && "./a.out"
 	elseif expand("%:e")=="tex"
@@ -96,6 +95,8 @@ function! Run() " расширяем и без того безграничные
 		!xelatex --8bit  --shell-escape "%" && rm "%:r.log" && (evince "%:r.pdf" 2> /dev/null &)
 	elseif expand("%:e")=="py"
 		!python3 "%"
+	elseif expand("%:e")=="go"
+		!go fmt "%" && go run "%"
 	elseif expand("%:e")=="pas"
 		!fpc -oa.out "%" && "./a.out" && rm "%:r.o"
 	elseif expand("%:e")=="java"
@@ -104,6 +105,10 @@ function! Run() " расширяем и без того безграничные
 		!bash "%"
 	elseif expand("%:e")=="rb"
 		!ruby "%"
+	elseif expand("%:e")=="scm"
+		!racket "%"
+	elseif expand("%:e")=="rkt"
+		!racket "%"
 	elseif expand("%:e")=="html"
 		!(firefox -p test "%" &)
 	elseif expand("%:e")=="md"
@@ -190,3 +195,7 @@ nnoremap g<Right> gt
 
 let g:AutoPairsMultilineClose = 0
 let g:AutoPairsFlyMode = 0
+
+set foldmethod=indent
+set foldlevelstart=99
+set nofoldenable

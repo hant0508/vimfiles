@@ -66,6 +66,14 @@ CMAIN:
 	mov eax, 0
 	ret"
 
+scm="#lang scheme
+
+"
+
+rkt="#lang racket
+
+"
+
 if [ "$ex" == "cpp" ]
 then
 	echo "$cpp" >> $1
@@ -90,4 +98,10 @@ then
 elif [ "$ex" == "asm" ]
 then
 	echo "$asm" >> $1
+elif [ "$ex" == "scm" ]
+then
+	echo "$scm" >> $1
+elif [ "$ex" == "rkt" ]
+then
+	echo "$rkt" >> $1
 fi

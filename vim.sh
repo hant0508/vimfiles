@@ -10,6 +10,7 @@ echo "Copying files..."
 cp -r .vim ~/
 cp -r .vimrc ~/
 cp -r .fonts ~/
+mkdir ~/.vim/undo
 echo "Installing fonts..."
 fc-cache -f
 echo "Done!"
