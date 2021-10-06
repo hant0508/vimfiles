@@ -47,12 +47,14 @@ let g:startify_list_order = [['Recently used files'], 'files',  ['Recently used 
 let g:startify_files_number = 5
 
 " настройки отступов
+set autoindent
 filetype plugin indent on
 set tabstop=4		" длина табуляции по умолчанию
 set shiftwidth=4
 au BufRead,BufNewFile *.{tex,txt,py,html}	set noautoindent
-au BufRead,BufNewFile *.{tex,xml,html,css}	set shiftwidth=2
-au BufRead,BufNewFile *.{tex,xml,html,css}	set tabstop=2
+au BufRead,BufNewFile *.{tex,xml,html,css,scm,rkt}	set shiftwidth=2
+au BufRead,BufNewFile *.{tex,xml,html,css,scm,rkt}	set tabstop=2
+au BufRead,BufNewFile *.{scm,rkt} set lisp
 " au BufRead,BufNewFile *.{c}	set expandtab
 set smarttab		" динамическое изменение длины табуляции
 
@@ -63,7 +65,7 @@ set t_Co=256
 colorscheme night
 autocmd! BufRead,BufNewFile,BufEnter *.{c,cpp,h,hpp,cxx,hxx,cc,java,javascript} call CSyntaxAfter()
 au BufRead,BufNewFile *.{s,asm,inc,nasm} set ft=nasm
-au BufRead,BufNewFile *.{scm} set ft=racket
+au BufRead,BufNewFile *.{scm,rkt} set ft=racket
 let g:python_highlight_all = 1
 
 " настройки powerline
